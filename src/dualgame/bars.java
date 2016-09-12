@@ -18,12 +18,15 @@ import java.util.*;
 int x_pos;
 int y_pos;
 int y_speed;
-bars(int x,int y)
+int score;
+bars(int x,int y,int score)
 {
 this.x_pos=x;
 this.y_pos=y;
 this.y_speed=5;
+this.score=score;
 }
+
 
 
 

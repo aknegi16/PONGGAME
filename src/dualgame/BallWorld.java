@@ -22,7 +22,8 @@ public class BallWorld extends Applet implements Runnable {
    //private DrawCanvas canvas; // Custom canvas for drawing the box/ball
    private int canvasWidth;
    private int canvasHeight;
-         
+        static public AudioClip Clip;
+        static public Image image;
                 
       int appletsize_x = 640; // Größe des Applets in x - Richtung
 	int appletsize_y = 400;
@@ -33,8 +34,8 @@ public class BallWorld extends Applet implements Runnable {
 	{
         resize(appletsize_x,appletsize_y);
         box=new ContainerBox(2,2,appletsize_x,appletsize_y);
-        b2=new bars(box.maxX-15,100); 
-        b1=new bars(10,100);
+        b2=new bars(box.maxX-15,100,0); 
+        b1=new bars(10,100,0);
 		setBackground (Color.white);
                 
                 
@@ -48,7 +49,8 @@ public class BallWorld extends Applet implements Runnable {
      // int angleInDegree = rand.nextInt(360);
       int angleInDegree=45;
       ball = new Balls(x, y, radius, speed, angleInDegree, Color.BLUE);
-                
+                Clip = getAudioClip(getDocumentBase(), "fire.wav");
+        image = getImage(getDocumentBase(), "football.png");
                 
                 
                 
@@ -180,7 +182,7 @@ public class BallWorld extends Applet implements Runnable {
 			try
 			{
 				// Stoppen des Threads für in Klammern angegebene Millisekunden
-				Thread.sleep (1000/50);
+				Thread.sleep (1000/55);
 			}
 			catch (InterruptedException ex)
 			{
@@ -248,9 +250,10 @@ public class BallWorld extends Applet implements Runnable {
          b1.draw(g);
          b2.draw(g);
          // Display ball's information
+         
          g.setColor(Color.WHITE);
-         g.setFont(new Font("Courier New", Font.PLAIN, 12));
-         g.drawString("Ball " + ball.toString(), 20, 30);
+         g.setFont(new Font("Courier New", Font.PLAIN, 40));
+         g.drawString(b1.score+ " " +b2.score, 200, 100);
       }
   
       

@@ -5,11 +5,13 @@
  */
 package dualgame;
 import java.awt.*;
+import java.applet.*;
+import java.net.*;
 /**
  *
  * @author intex
  */
-public class ContainerBox {
+public class ContainerBox extends Applet{
    int minX, maxX, minY, maxY;  // Box's bounds (package access)
    public Color colorFilled;   // Box's filled color (background)
    public Color colorBorder;   // Box's border color
@@ -43,7 +45,8 @@ public class ContainerBox {
    
    public void draw(Graphics g) {
       g.setColor(colorFilled);
-      g.fillRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
+      g.drawImage(BallWorld.image, minX, minY, maxX - minX - 1, maxY - minY - 1, this);
+// g.fillRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
       g.setColor(colorBorder);
       g.drawRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
    }

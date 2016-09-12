@@ -74,14 +74,16 @@ private Image dbImage;
       x_pos += x_speed;
       y_pos += y_speed;
       // Check if the ball moves over the bounds. If so, adjust the position and speed.
-      if (x_pos+radius < ballMinX) {
+     if (x_pos+radius < ballMinX) {
          x_speed = -x_speed; // Reflect along normal
-         x_pos = ballMinX-radius;     // Re-position the ball at the edge
+         x_pos = ballMinX-radius;  
+         b2.score++;
+       // Re-position the ball at the edge
       } else if (x_pos +radius > ballMaxX) {
          x_speed = -x_speed;
          x_pos = ballMaxX-radius;
-      }
-      // May cross both x and y bounds
+         b1.score++;
+      }//May cross both x and y bounds
       if (y_pos +radius< ballMinY) {
          y_speed = -y_speed;
          y_pos = ballMinY-radius;
@@ -92,14 +94,14 @@ private Image dbImage;
       
       
    if(collision(b1))
-   {
+   { BallWorld.Clip.play();
    x_speed = -x_speed;
-   //   x_pos = b1.x_pos +5+2*radius;                   
+     x_pos = b1.x_pos +10;                
    }
    else if(collision(b2))
-   {
+   {BallWorld.Clip.play();
    x_speed = -x_speed;
-   //x_pos = b2.x_pos  -5 -2*radius;  
+   x_pos = b2.x_pos  -2*radius;   
    }
     
       
