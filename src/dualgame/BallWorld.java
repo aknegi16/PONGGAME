@@ -7,6 +7,7 @@ package dualgame;
 import java.applet.*; 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.*;
 /**
@@ -14,6 +15,8 @@ import javax.swing.*;
  */
 public class BallWorld extends Applet implements Runnable {
    
+   private Image dbImage;
+	private Graphics dbg;
    boolean bar_up;
    boolean bar_down;
    Balls ball;         // A single bouncing Ball's instance
@@ -29,9 +32,29 @@ public class BallWorld extends Applet implements Runnable {
 	int appletsize_y = 400;
         bars b1,b2;
         ContainerBox box;
+        Cursor c; 
+        boolean isStoped = true;
+        
+        
+        enum WINNER {b1,b2};
+        WINNER winner=null;
+        
+        
+        
+        private int speed;	
+        
         
 	public void init()
 	{
+if (getParameter ("speed") != null)
+		{
+			speed = Integer.parseInt(getParameter("speed"));
+		}
+		else speed = 15;
+// generate a Crosshair cursor 
+c = new Cursor (Cursor.CROSSHAIR_CURSOR); 
+// set this cursor as the standard cursor of the applet 
+this.setCursor (c); 
         resize(appletsize_x,appletsize_y);
         box=new ContainerBox(2,2,appletsize_x,appletsize_y);
         b2=new bars(box.maxX-15,100,0); 
@@ -39,16 +62,16 @@ public class BallWorld extends Applet implements Runnable {
 		setBackground (Color.white);
                 
                 
-                Random rand = new Random();
+                Random rand = new Random(); 
       int radius = 20;
      // int x = rand.nextInt(appletsize_x - radius * 2 - 20) + radius + 10;
      // int y = rand.nextInt(appletsize_y - radius * 2 - 20) + radius + 10;
-     int x=0;
-     int y=0;
-      int speed = 5;
+     int x=321;
+     int y=402;
+      int bspeed = 5;
      // int angleInDegree = rand.nextInt(360);
       int angleInDegree=45;
-      ball = new Balls(x, y, radius, speed, angleInDegree, Color.BLUE);
+      ball = new Balls(x, y, radius, bspeed, angleInDegree, Color.BLUE);
                 Clip = getAudioClip(getDocumentBase(), "fire.wav");
         image = getImage(getDocumentBase(), "football.png");
                 
@@ -100,6 +123,23 @@ public class BallWorld extends Applet implements Runnable {
 		return true;
 	}
         
+        
+        public boolean mouseDown (Event e, int x, int y)
+	{
+		// Spiel läuft
+		
+		// Wenn Spiel noch nicht gestartet ist, oder wieder gestartet wird
+		if (isStoped && e.clickCount == 2)
+		{
+		    // Alle wichtigen Werte zurücksetzen
+			isStoped = false;
+                         
+			init ();
+		}
+
+		return true;
+	}
+        
          /*public boolean keyUp (Event e, int key)
          {
              
@@ -133,56 +173,37 @@ public class BallWorld extends Applet implements Runnable {
 	public void run ()
 	{
 		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    
+                
+                
+                
+                
+                
+               
+                
+                
+                
 		// Solange true ist läuft der Thread weiter
 		while (true)
 		{
-                    
-                    
+                                     
                    
                     
-                    
-                    
-			/*if (x_pos > appletsize_x - radius)
-			{
-				// Ändern der Richtung des Balles
-				x_speed = -x_speed;
-			}
-			// Ball brührt linken Rand und prallt ab
-			 if (x_pos < radius)
-			{
-				// Ändern der Richtung des Balles
-				x_speed = -x_speed;
-                                x_pos=radius;
-			}
-
-                        else if(x_pos+radius > appletsize_x )
-                        
-                        {x_speed = -x_speed;
-                  x_pos = appletsize_x - radius;
-               }
-               // May cross both x and y bounds
-               if (y_pos - radius < 0) {
-                  y_speed = -y_speed;
-                  y_pos = radius;
-               } else if (y_pos + radius > appletsize_y) {
-                  y_speed = -y_speed;
-                  y_pos = appletsize_y - radius;
-               }
-			// Verändern der x- Koordinate
-			x_pos += x_speed;
-                        y_pos += y_speed;
-                        
-                        */
-                        
-                        ball.moveOneStepWithCollisionDetection(box,b1,b2);
+                        if (!winner() && !isStoped )
+                        {ball.moveOneStepWithCollisionDetection(box,b1,b2);
                         movebars();
                         repaint();
+                                                                
+                         
+                 
+                      
+         
+                        
+                        }
 
 			try
 			{
 				// Stoppen des Threads für in Klammern angegebene Millisekunden
-				Thread.sleep (1000/55);
+				Thread.sleep (speed);
 			}
 			catch (InterruptedException ex)
 			{
@@ -194,7 +215,6 @@ public class BallWorld extends Applet implements Runnable {
 		}
 	}
 
-        /*
         public void update (Graphics g)
 	{
 		// Initialisierung des DoubleBuffers
@@ -215,7 +235,6 @@ public class BallWorld extends Applet implements Runnable {
 		// Nun fertig gezeichnetes Bild Offscreen auf dem richtigen Bildschirm anzeigen
 		g.drawImage (dbImage, 0, 0, this);
 	}
-        */
          
          
       void movebars()
@@ -234,7 +253,15 @@ public class BallWorld extends Applet implements Runnable {
       
       }
       
-      
+      boolean winner()
+      {
+      if(b1.score>10)
+      {winner=WINNER.b1;return true;}
+      else if(b2.score>10)
+      {winner=WINNER.b2;return true;}
+      else 
+          return false;
+      }
       
       
       
@@ -242,7 +269,13 @@ public class BallWorld extends Applet implements Runnable {
   
       public void paint (Graphics g)
 {    // Paint background
-    g.setColor(Color.black);
+    if (isStoped)
+			{
+				g.setColor (Color.BLACK);
+				g.drawString ("Doubleclick to start Game!", 40, 200);
+			}
+    else if (!winner())
+    {g.setColor(Color.black);
                
          // Draw the box and the ball
          box.draw(g);
@@ -254,8 +287,29 @@ public class BallWorld extends Applet implements Runnable {
          g.setColor(Color.WHITE);
          g.setFont(new Font("Courier New", Font.PLAIN, 40));
          g.drawString(b1.score+ " " +b2.score, 200, 100);
-      }
+   
+    
+    }
+       else if (winner())
+		{         box.draw(g);
+			g.setColor (Color.BLACK);
+
+			// Erreichte Punkte und game over
+                         g.setFont(new Font("Courier New", Font.PLAIN, 40));
+			g.drawString ("GAME OVER", 210, 100);
+			 g.setFont(new Font("Courier New", Font.PLAIN, 70));
+                        g.drawString ( ""+b1.score , 105, 201);
+                        g.drawString ( ""+b2.score , 480, 201);
+                        g.setFont(new Font("Courier New", Font.PLAIN, 50));
+                        if(winner==WINNER.b1)
+                            g.drawString ( "YOU WON" , 80, 300);
+                        if(winner==WINNER.b2)
+                            g.drawString ( "YOU WON" , 400, 300);
+            //g.drawString ("Doubleclick on the Applet, to play again!", 20, 220);
+
+			isStoped = true;
+                }
   
       
-   }
+   }}
 

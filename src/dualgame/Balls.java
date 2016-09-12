@@ -22,20 +22,23 @@ public class Balls {
     
    int x_pos ;		
 	int y_pos;	
-	int radius ;	
+	int radius ;
+        int angle;
 private Image dbImage;
 	private Graphics dbg;
         float x_speed;
         float y_speed ;// Geschwindigkeit des Balles in x - Richtung
 	Color color;		// Radius des Balles
-	
+	float speed;
          public Balls(int x, int y, int radius, int speed, int angleInDegree,
          Color color) {
       this.x_pos = x;
       this.y_pos = y;
+      this.angle=angleInDegree;
+      this.speed=speed;
       // Convert (speed, angle) to (x, y), with y-axis inverted
-      this.x_speed = (float)(2*speed * Math.cos(Math.toRadians(angleInDegree)));
-      this.y_speed = (float)(speed * (float)Math.sin(Math.toRadians(angleInDegree)));
+      this.x_speed = (float)(speed * 2*Math.cos(Math.toRadians(angle)));
+      this.y_speed = (float)(speed * Math.sin(Math.toRadians(angle)));
       this.radius = radius;
       this.color = color;
    }
@@ -73,17 +76,24 @@ private Image dbImage;
       // Calculate the ball's new position
       x_pos += x_speed;
       y_pos += y_speed;
+      
       // Check if the ball moves over the bounds. If so, adjust the position and speed.
-     if (x_pos+radius < ballMinX) {
-         x_speed = -x_speed; // Reflect along normal
+     if (x_pos+radius <= ballMinX) {
+         x_speed = -x_speed; 
+         
+         
+// Reflect along normal
          x_pos = ballMinX-radius;  
          b2.score++;
-       // Re-position the ball at the edge
-      } else if (x_pos +radius > ballMaxX) {
+          
+          
+      } else if (x_pos +radius >= ballMaxX) {
          x_speed = -x_speed;
+         
          x_pos = ballMaxX-radius;
          b1.score++;
-      }//May cross both x and y bounds
+         
+      }//May cross both x and y bounds*/
       if (y_pos +radius< ballMinY) {
          y_speed = -y_speed;
          y_pos = ballMinY-radius;
@@ -96,12 +106,19 @@ private Image dbImage;
    if(collision(b1))
    { BallWorld.Clip.play();
    x_speed = -x_speed;
-     x_pos = b1.x_pos +10;                
+     x_pos = b1.x_pos +10;  
+    
+    
+                       
+                        
+                       
+                        
    }
    else if(collision(b2))
    {BallWorld.Clip.play();
    x_speed = -x_speed;
    x_pos = b2.x_pos  -2*radius;   
+    
    }
     
       
