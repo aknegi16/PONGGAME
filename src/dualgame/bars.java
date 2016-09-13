@@ -32,7 +32,7 @@ this.score=score;
 
 
 public void draw(Graphics g)
-{
+{g.setColor(Color.BLACK);
  g.fillRect(this.x_pos, this.y_pos, 10, 100);
               //  g.fillRect(b2.x_pos, b2.y_pos, 10, 50);
 

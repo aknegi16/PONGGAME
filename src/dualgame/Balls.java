@@ -30,7 +30,7 @@ private Image dbImage;
         float y_speed ;// Geschwindigkeit des Balles in x - Richtung
 	Color color;		// Radius des Balles
 	float speed;
-         public Balls(int x, int y, int radius, int speed, int angleInDegree,
+         public Balls(int x, int y, int radius, float speed, int angleInDegree,
          Color color) {
       this.x_pos = x;
       this.y_pos = y;
@@ -39,6 +39,8 @@ private Image dbImage;
       // Convert (speed, angle) to (x, y), with y-axis inverted
       this.x_speed = (float)(speed * 2*Math.cos(Math.toRadians(angle)));
       this.y_speed = (float)(speed * Math.sin(Math.toRadians(angle)));
+      //this.x_speed =xspeed;
+      //this.y_speed =yspeed;
       this.radius = radius;
       this.color = color;
    }
@@ -57,7 +59,7 @@ private Image dbImage;
            // g.setColor  (Color.blue);
             
            // g.fillRect(0, 0,appletsize_x, appletsize_y);
-		g.setColor  (Color.red);
+		g.setColor  (color);
 
 		g.fillOval (x_pos , y_pos , 2 * radius, 2 * radius);
                 
@@ -78,22 +80,7 @@ private Image dbImage;
       y_pos += y_speed;
       
       // Check if the ball moves over the bounds. If so, adjust the position and speed.
-     if (x_pos+radius <= ballMinX) {
-         x_speed = -x_speed; 
-         
-         
-// Reflect along normal
-         x_pos = ballMinX-radius;  
-         b2.score++;
-          
-          
-      } else if (x_pos +radius >= ballMaxX) {
-         x_speed = -x_speed;
-         
-         x_pos = ballMaxX-radius;
-         b1.score++;
-         
-      }//May cross both x and y bounds*/
+    //May cross both x and y bounds*/
       if (y_pos +radius< ballMinY) {
          y_speed = -y_speed;
          y_pos = ballMinY-radius;
@@ -104,7 +91,7 @@ private Image dbImage;
       
       
    if(collision(b1))
-   { BallWorld.Clip.play();
+   { BallWorld.hit.play();
    x_speed = -x_speed;
      x_pos = b1.x_pos +10;  
     
@@ -115,7 +102,7 @@ private Image dbImage;
                         
    }
    else if(collision(b2))
-   {BallWorld.Clip.play();
+   {BallWorld.hit.play();
    x_speed = -x_speed;
    x_pos = b2.x_pos  -2*radius;   
     
@@ -127,7 +114,34 @@ private Image dbImage;
       
       
    }
+        public boolean isOUT(ContainerBox box,bars b1,bars b2)
+        {
+         if (x_pos+radius+radius+10< box.minX) {
+         //x_speed = -x_speed; 
+         
+          BallWorld.miss.play();
+// Reflect along normal
+        // x_pos = ballMinX-radius;  
+         b2.score++;
+         if(b2.score>10)
+         { BallWorld.back.stop();
+             BallWorld.win.play();}
+             
+         return true;
+          
+      } else if (x_pos -10 > box.maxX) {
+        // x_speed = -x_speed;
+         BallWorld.miss.play();
+        // x_pos = ballMaxX-radius;
+         b1.score++;
+         if(b1.score>10)
+            { BallWorld.back.stop();
+             BallWorld.win.play();}
+         return true;
+      }
         
+      else return false;
+        }
         
     private boolean collision(bars b) {
 		return b.getBounds().intersects(getBounds());

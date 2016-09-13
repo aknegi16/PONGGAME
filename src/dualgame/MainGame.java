@@ -64,7 +64,7 @@ public class MainGame extends Applet implements Runnable {
      // int angleInDegree = rand.nextInt(360);
       int angleInDegree=45;
       Color mycolor = new Color (228, 141, 42);
-      ball = new Balls(x, y, radius, speed, angleInDegree, mycolor);
+      //ball = new Balls(x, y, radius, speed, angleInDegree, mycolor);
                
                  ballworld=new BallWorld();
               
