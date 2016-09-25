@@ -6,7 +6,7 @@
 package dualgame;
 import java.awt.*;
 import java.applet.*;
-import java.net.*;
+
 /**
  *
  * @author intex
@@ -18,7 +18,8 @@ public class ContainerBox extends Applet{
    private static final Color DEFAULT_COLOR_FILLED = Color.GREEN;
    private static final Color DEFAULT_COLOR_BORDER = Color.BLACK;
    
-   /** Constructors */
+   /** Constructors
+     * @param x */
    public ContainerBox(int x, int y, int width, int height, Color colorFilled, Color colorBorder) {
       minX = x;
       minY = y;
@@ -44,7 +45,7 @@ public class ContainerBox extends Applet{
    
    
    public void draw(Graphics g) {
-      g.setColor(colorFilled);
+      //g.setColor(colorFilled);
       g.drawImage(BallWorld.image, minX, minY, maxX - minX - 1, maxY - minY - 1, this);
 // g.fillRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
       g.setColor(colorBorder);

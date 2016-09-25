@@ -6,53 +6,62 @@
 package dualgame;
 import java.applet.*; 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Date;
+
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+
 /**
  * The control logic and main display panel for game.
  */
 public class BallWorld extends Applet implements Runnable {
-   
+   //for double buffering
    private Image dbImage;
-	private Graphics dbg;
+   private Graphics dbg;
+   
+   //for control through keyboard keys
    boolean bar_up1, bar_down1,bar_up2,bar_down2;
-   Balls ball;         // A single bouncing Ball's instance
-     // The container rectangular box
+   
+   //instances of the objects
+   Balls ball;         
+   bars b1,b2;
+   ContainerBox box;
   
-   //private DrawCanvas canvas; // Custom canvas for drawing the box/ball
-   private int canvasWidth;
-   private int canvasHeight;
-        static public AudioClip hit,miss,win,back;
-        static public Image image;
-                
-      int appletsize_x = 640; // Größe des Applets in x - Richtung
-	int appletsize_y = 400;
-        bars b1,b2;
-        ContainerBox box;
-        Cursor c; 
-        boolean isStoped = true;
+   //for audio and images
+   static public AudioClip hit,miss,win,back;
+   static public Image image;
+   
+   //applet size
+   int appletsize_x = 640;
+   int appletsize_y = 400;
         
+   Cursor c; 
+   
+   //control for game stop and play
+   boolean isStoped = true;
         
+     //enumeration   
         enum WINNER {b1,b2};
         WINNER winner;
+        
+        //points that matches with the current scores- for change in score 
         int point1;
         int point2;
         
-        //int xspeed=10;
-       // int yspeed=2;
-        private int speed;	
-        
+       //arguments of the ball 
+       private int speed;	
         int radius = 20;
-         int x;
-     int y;
-      float bspeed ;
-      int angleInDegree;
-      Random rand = new Random(); 
-	public void init()
+        int x;
+        int y;
+        float bspeed ;
+        int angleInDegree;
+       
+       //random function for the initial angle of the ball 
+       // Random rand = new Random(); 
+	
+        
+        //init function that initalises all the parameters of the applet
+        public void init()
 	{ bspeed=5;
         angleInDegree=45;
         x=321;
@@ -75,10 +84,7 @@ this.setCursor (c);
                 
              winner=null;   
       
-     // int x = rand.nextInt(appletsize_x - radius * 2 - 20) + radius + 10;
-     // int y = rand.nextInt(appletsize_y - radius * 2 - 20) + radius + 10;
-    
-     //int angleInDegree = rand.nextInt(360);
+     
       
       ball = new Balls(x, y, radius,bspeed, angleInDegree, Color.BLUE);
                hit = getAudioClip(getDocumentBase(), "fire.wav");
@@ -87,13 +93,14 @@ this.setCursor (c);
                win = getAudioClip(getDocumentBase(), "winner.wav");
         image = getImage(getDocumentBase(), "football.png");
                 
-                int point1=b1.score;
-        int point2=b2.score;
+                point1=b1.score;
+        point2=b2.score;
                 
 	}
 
 	public void start ()
 	{back.play();
+        back.loop();
 		Thread th = new Thread (this);
 		th.start ();
 	}
@@ -205,6 +212,7 @@ this.setCursor (c);
 			isStoped = false;
                          
 			init ();
+                        
 		}
 
 		return true;
@@ -271,10 +279,10 @@ this.setCursor (c);
                         {
                             
                             angleInDegree = 135;
-                                
+                            back.loop();    
                             ball=new Balls(500, 0, radius, (bspeed=bspeed+0.2f), angleInDegree, Color.BLUE);}
                         if(n==2)    
-                        {
+                        {back.loop();
                             angleInDegree = 45;
                             ball=new Balls(100, 0, radius, (bspeed=bspeed+0.2f), angleInDegree, Color.BLUE);
                         
@@ -291,7 +299,10 @@ this.setCursor (c);
          
                         
                         }
-            
+                       
+                        /*if (winner())
+                        {b1.score=0;
+                        b2.score=0;}*/
 			try
 			{
 				// Stoppen des Threads für in Klammern angegebene Millisekunden
@@ -394,7 +405,11 @@ this.setCursor (c);
       
       }
    
-  
+    /**
+     *
+     * @param g
+     */
+    @Override
       public void paint (Graphics g)
 {    // Paint background
     if (isStoped)

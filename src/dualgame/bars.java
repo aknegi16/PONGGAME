@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 package dualgame;
-import java.applet.*;  
-import javax.swing.*;  
+
 import java.awt.*;
-import java.util.*;
+
 /**
  *
  * @author intex

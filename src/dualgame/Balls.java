@@ -4,16 +4,8 @@
  * and open the template in the editor.
  */
 package dualgame;
-import java.applet.*;  
-import javax.swing.*;  
-import java.awt.geom.*;
+
 import java.awt.*;
-import java.awt.image.*;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 
