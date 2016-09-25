@@ -62,9 +62,9 @@ private Image dbImage;
         
         public void moveOneStepWithCollisionDetection(ContainerBox box,bars b1,bars b2) {
       // Get the ball's bounds, offset by the radius of the ball
-      int ballMinX = box.minX + radius;
+     // int ballMinX = box.minX + radius;
       int ballMinY = box.minY + radius;
-      int ballMaxX = box.maxX - radius;
+     // int ballMaxX = box.maxX - radius;
       int ballMaxY = box.maxY - radius;
    
       // Calculate the ball's new position
@@ -73,10 +73,17 @@ private Image dbImage;
       
       // Check if the ball moves over the bounds. If so, adjust the position and speed.
     //May cross both x and y bounds*/
-      if (y_pos +radius< ballMinY) {
+      /*if (y_pos +radius< ballMinY) {
          y_speed = -y_speed;
          y_pos = ballMinY-radius;
-      }else if (y_pos +radius > ballMaxY) {
+      }*/
+      if (y_pos < box.minY) {
+         y_speed = -y_speed;
+         y_pos = box.minY;
+      }
+      
+      
+      else if (y_pos +radius > ballMaxY) {
          y_speed = -y_speed;
          y_pos = ballMaxY-radius;
       }

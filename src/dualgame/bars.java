@@ -15,7 +15,7 @@ import java.awt.*;
      public class bars 
 {
 int x_pos;
-int y_pos;
+int y_pos; 
 int y_speed;
 int score;
 bars(int x,int y,int score)

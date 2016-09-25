@@ -7,7 +7,7 @@ package dualgame;
 import java.applet.*; 
 import java.awt.*;
 
-import java.util.Random;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,11 +29,11 @@ public class BallWorld extends Applet implements Runnable {
   
    //for audio and images
    static public AudioClip hit,miss,win,back;
-   static public Image image;
+   static public Image image,image2,image3;
    
    //applet size
-   int appletsize_x = 640;
-   int appletsize_y = 400;
+   int appletsize_x = 800;    //640x400
+   int appletsize_y = 500;
         
    Cursor c; 
    
@@ -76,8 +76,8 @@ c = new Cursor (Cursor.CROSSHAIR_CURSOR);
 // set this cursor as the standard cursor of the applet 
 this.setCursor (c); 
         resize(appletsize_x,appletsize_y);
-        box=new ContainerBox(2,2,appletsize_x,appletsize_y);
-        b2=new bars(box.maxX-15,100,10); 
+        box=new ContainerBox(2,2,640,400);
+        b2=new bars(box.maxX-20,100,10); 
         b1=new bars(10,100,0);
 		setBackground (Color.white);
                 
@@ -92,7 +92,8 @@ this.setCursor (c);
                miss = getAudioClip(getDocumentBase(), "miss.wav");
                win = getAudioClip(getDocumentBase(), "winner.wav");
         image = getImage(getDocumentBase(), "football.png");
-                
+           image2 = getImage(getDocumentBase(), "pic.jpg");
+           image3 = getImage(getDocumentBase(), "pic2.jpg");
                 point1=b1.score;
         point2=b2.score;
                 
@@ -320,22 +321,21 @@ this.setCursor (c);
 
         public void update (Graphics g)
 	{
-		// Initialisierung des DoubleBuffers
+		
 		if (dbImage == null)
 		{
 			dbImage = createImage (this.getSize().width, this.getSize().height);
 			dbg = dbImage.getGraphics ();
 		}
 
-		// Bildschirm im Hintergrund löschen
+		
 		dbg.setColor (getBackground ());
 		dbg.fillRect (0, 0, this.getSize().width, this.getSize().height);
 
-		// Auf gelöschten Hintergrund Vordergrund zeichnen
+		
 		dbg.setColor (getForeground());
 		paint (dbg);
-
-		// Nun fertig gezeichnetes Bild Offscreen auf dem richtigen Bildschirm anzeigen
+                   //transfers offscreeen to the window
 		g.drawImage (dbImage, 0, 0, this);
 	}
          
@@ -412,13 +412,16 @@ this.setCursor (c);
     @Override
       public void paint (Graphics g)
 {    // Paint background
+    
+    g.drawImage(image2, 642,0 , appletsize_x-642, appletsize_y, this);
+    g.drawImage(image3, 0,401 , 642, appletsize_y-400, this);
     if (isStoped)
 			{
 				g.setColor (Color.BLACK);
 				g.drawString ("Doubleclick to start Game!", 40, 200);
 			}
     else if (!winner())
-    {g.setColor(Color.black);
+    {//g.setColor(Color.black);
                
          // Draw the box and the ball
          box.draw(g);
@@ -456,5 +459,8 @@ this.setCursor (c);
                 }
   
       
-   }}
+   }
+
+
+}
 

@@ -49,7 +49,7 @@ public class ContainerBox extends Applet{
       g.drawImage(BallWorld.image, minX, minY, maxX - minX - 1, maxY - minY - 1, this);
 // g.fillRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
       g.setColor(colorBorder);
-      g.drawRect(minX, minY, maxX - minX - 1, maxY - minY - 1);
+      g.drawRect(minX, minY, maxX - minX -1, maxY - minY-1);
    }
    
    
