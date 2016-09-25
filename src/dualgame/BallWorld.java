@@ -315,7 +315,7 @@ this.setCursor (c);
 			}
 
 			// Zurücksetzen der ThreadPriority auf Maximalwert
-			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+			//Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 		}
 	}
 
